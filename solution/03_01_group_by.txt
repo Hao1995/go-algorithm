@@ -1,0 +1,14 @@
+100%
+
+CREATE TABLE invoice_items (
+    inv_num integer not null,
+    item varchar(10) not null,
+    price integer not null
+);
+
+SELECT
+    inv_num,
+    SUM(price) as sum
+FROM
+    invoice_items
+GROUP BY inv_num
