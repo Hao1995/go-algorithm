@@ -1,6 +1,8 @@
 package solution
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestNumSquaredOperations(t *testing.T) {
 

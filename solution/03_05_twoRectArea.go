@@ -45,3 +45,45 @@ func TwoRectArea(K int, L int, M int, N int, P int, Q int, R int, S int) int {
 
 	return int(union)
 }
+
+func TwoRectAreaFixed(K int, L int, M int, N int, P int, Q int, R int, S int) int {
+
+	// AreaA
+	// (K,L), (M,N)
+	// AreaB
+	// (P,Q), (R,S)
+
+	rectA := float64(M-K) * float64(N-L)
+	if rectA < 0 {
+		return -1
+	}
+
+	rectB := float64(R-P) * float64(S-Q)
+	if rectB < 0 {
+		return -1
+	}
+
+	union := rectA + rectB
+	if union < 0 {
+		return -1
+	}
+
+	// Confirm whether the intersection
+
+	if ((((K <= P) && (P <= M)) || ((K <= R) && (R <= M))) && (((L <= Q) && (Q <= N)) || ((L <= S) && (S <= N)))) || ((((P <= K) && (K <= R)) || ((P <= M) && (M <= R))) && (((Q <= L) && (L <= S)) || ((Q <= N) && (N <= S)))) {
+		// rectA include rectB
+		// rectB include rectA
+
+		// have intersection
+		x := []int{K, P, R, M}
+		sort.Ints(x)
+
+		y := []int{L, Q, S, N}
+		sort.Ints(y)
+
+		interArea := float64(x[2]-x[1]) * float64(y[2]-y[1])
+		union -= interArea
+	}
+
+	return int(union)
+}
