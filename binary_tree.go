@@ -6,26 +6,37 @@ type Node struct {
 	Right *Node
 }
 
-func (n *Node) Insert(val int) {
-	if n == nil {
+type BinarySearchTree struct {
+	Root *Node
+}
+
+func (b *BinarySearchTree) Insert(val int) {
+	if b.Root == nil {
+		b.Root = &Node{Value: val}
 		return
 	}
 
-	if val > n.Value {
-		if n.Right == nil {
-			n.Right = &Node{Value: val}
+	currNode := b.Root
+	for {
+		if val > currNode.Value {
+			if currNode.Right == nil {
+				currNode.Right = &Node{Value: val}
+				return
+			}
+			currNode = currNode.Right
+		} else if val < currNode.Value {
+			if currNode.Left == nil {
+				currNode.Left = &Node{Value: val}
+				return
+			}
+			currNode = currNode.Left
 		} else {
-			n.Right.Insert(val)
-		}
-	} else if val < n.Value {
-		if n.Left == nil {
-			n.Left = &Node{Value: val}
-		} else {
-			n.Left.Insert(val)
+			// val is exist, return
+			return
 		}
 	}
 }
 
-func (n *Node) Search(node *Node, val int) int {
+func (b *BinarySearchTree) Search(node *Node, val int) int {
 	return 0
 }

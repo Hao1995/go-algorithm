@@ -6,70 +6,66 @@ import (
 	"gotest.tools/v3/assert"
 )
 
-func searchInBT(node *Node, val int) bool {
+func traversalFunc(bst *BinarySearchTree) []int {
+	if bst == nil {
+		return []int{}
+	}
+
+	arr := traversal(bst.Root, []int{})
+	return arr
+}
+
+func traversal(node *Node, arr []int) []int {
 	if node == nil {
-		return false
+		return arr
 	}
 
-	if node.Value == val {
-		return true
-	} else if val > node.Value {
-		return searchInBT(node.Right, val)
-	} else if val < node.Value {
-		return searchInBT(node.Left, val)
+	arr = append(arr, node.Value)
+
+	if node.Left != nil {
+		arr = traversal(node.Left, arr)
+	}
+	if node.Right != nil {
+		arr = traversal(node.Right, arr)
 	}
 
-	return false
+	return arr
 }
 
 // TestBinaryTreeInsert tests BinaryTree
 func TestBinaryTreeInsert(t *testing.T) {
 
 	tests := []struct {
-		target    int
-		setUp     func() *Node
-		checkFunc func(node *Node, val int) bool
-		expRes    bool
+		target        int
+		setUp         func(bst *BinarySearchTree)
+		traversalFunc func(bst *BinarySearchTree) []int
+		expRes        []int
 	}{
 		{
 			target: 14,
-			setUp: func() *Node {
-				// 10 -> 1, 15
-				// 1 -> nil, 2
-				// 15 -> 13, 16
-				node := &Node{
-					Value: 10,
-					Left: &Node{
-						Value: 1,
-						Right: &Node{
-							Value: 2,
-						},
-					},
-					Right: &Node{
-						Value: 15,
-						Left: &Node{
-							Value: 13,
-						},
-						Right: &Node{
-							Value: 16,
-						},
-					},
-				}
-
-				return node
+			setUp: func(bst *BinarySearchTree) {
+				//      10
+				//   1      15
+				// n   2  13   16
+				bst.Insert(10)
+				bst.Insert(1)
+				bst.Insert(15)
+				bst.Insert(2)
+				bst.Insert(13)
+				bst.Insert(16)
 			},
-			checkFunc: searchInBT,
-			expRes:    true,
+			traversalFunc: traversalFunc,
+			expRes:        []int{10, 1, 2, 15, 13, 16},
 		},
 	}
 
 	for _, test := range tests {
-		root := test.setUp()
+		bst := &BinarySearchTree{}
 
-		root.Insert(test.target)
+		test.setUp(bst)
 
-		actual := test.checkFunc(root, test.target)
+		actual := test.traversalFunc(bst)
 
-		assert.Equal(t, test.expRes, actual)
+		assert.DeepEqual(t, test.expRes, actual)
 	}
 }
