@@ -34,7 +34,6 @@ func traversal(node *Node, arr []int) []int {
 
 // TestBinaryTreeInsert tests BinaryTree
 func TestBinaryTreeInsert(t *testing.T) {
-
 	tests := []struct {
 		target        int
 		setUp         func(bst *BinarySearchTree)
@@ -65,6 +64,88 @@ func TestBinaryTreeInsert(t *testing.T) {
 		test.setUp(bst)
 
 		actual := test.traversalFunc(bst)
+
+		assert.DeepEqual(t, test.expRes, actual)
+	}
+}
+
+// TestBinaryTreeSearch tests Search method in BinaryTree
+func TestBinaryTreeSearch(t *testing.T) {
+	tests := []struct {
+		desc          string
+		target        int
+		setUp         func(desc string) *BinarySearchTree
+		traversalFunc func(bst *BinarySearchTree) []int
+		expRes        *Node
+	}{
+		{
+			desc:   "success to find value",
+			target: 2,
+			setUp: func(desc string) *BinarySearchTree {
+				//      10
+				//   1      15
+				// n   2  13   16
+				btree := &BinarySearchTree{}
+				btree.Root = &Node{
+					Value: 10,
+					Left: &Node{
+						Value: 1,
+						Right: &Node{
+							Value: 2,
+						},
+					},
+					Right: &Node{
+						Value: 15,
+						Left: &Node{
+							Value: 13,
+						},
+						Right: &Node{
+							Value: 16,
+						},
+					},
+				}
+				return btree
+			},
+			expRes: &Node{
+				Value: 2,
+			},
+		},
+		{
+			desc:   "failed to find non-exist value",
+			target: 12,
+			setUp: func(desc string) *BinarySearchTree {
+				//      10
+				//   1      15
+				// n   2  13   16
+				btree := &BinarySearchTree{}
+				btree.Root = &Node{
+					Value: 10,
+					Left: &Node{
+						Value: 1,
+						Right: &Node{
+							Value: 2,
+						},
+					},
+					Right: &Node{
+						Value: 15,
+						Left: &Node{
+							Value: 13,
+						},
+						Right: &Node{
+							Value: 16,
+						},
+					},
+				}
+				return btree
+			},
+			expRes: nil,
+		},
+	}
+
+	for _, test := range tests {
+		bt := test.setUp(test.desc)
+
+		actual := bt.Search(test.target)
 
 		assert.DeepEqual(t, test.expRes, actual)
 	}

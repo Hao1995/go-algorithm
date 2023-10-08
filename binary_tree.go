@@ -37,6 +37,35 @@ func (b *BinarySearchTree) Insert(val int) {
 	}
 }
 
-func (b *BinarySearchTree) Search(node *Node, val int) int {
-	return 0
+func (b *BinarySearchTree) Search(val int) *Node {
+	if b.Root == nil {
+		return nil
+	}
+
+	currNode := b.Root
+	for {
+		if val == currNode.Value {
+			return currNode
+		}
+
+		if val < currNode.Value {
+			if currNode.Left == nil {
+				return nil
+			}
+
+			currNode = currNode.Left
+
+			continue
+		}
+
+		if val > currNode.Value {
+			if currNode.Right == nil {
+				return nil
+			}
+
+			currNode = currNode.Right
+
+			continue
+		}
+	}
 }
