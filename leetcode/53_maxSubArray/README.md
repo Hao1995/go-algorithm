@@ -45,18 +45,21 @@ Asc Negative Case:
 # Code
 ```
 func maxSubArray(nums []int) int {
-    var maxAns int = -1 << 31
-    var currAns int = 0
+    var ans int = -1 << 31
+    var localSum int = 0
     for _, num := range nums {
-        if currAns < 0 && num > currAns {
-            currAns = num
-        } else {
-            currAns += num
-        }
-        
-        if currAns > maxAns {
-            maxAns = currAns
-        }
+        localSum += num
+        localSum = max(localSum, num)
+        ans = max(ans, localSum)
     }
-    return maxAns
+
+    return ans
 }
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
