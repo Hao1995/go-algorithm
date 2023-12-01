@@ -22,26 +22,32 @@ Notice that the answer must be a substring, "pwke" is a subsequence and not a su
 package lengthoflongestsubstring
 
 func lengthOfLongestSubstring(s string) int {
-	idxMap := make(map[rune]int)
-	var maxCount int
-	var count int
-	for currIdx, c := range s {
-		if repeatedIdx, ok := idxMap[c]; ok {
-			count = len(s[repeatedIdx+1 : currIdx+1])
-
-			// initial idxMap
-			idxMap = make(map[rune]int)
-			for i := repeatedIdx + 1; i < currIdx+1; i++ {
-				idxMap[rune(s[i])] = i
-			}
-			continue
+	var longestLen int = 0
+	checkMap := make(map[rune]int)
+	for idx, r := range s {
+		prevIdx, ok := checkMap[r]
+		if ok {
+			checkMap = initCheckMap(s, prevIdx, idx)
+		} else {
+			checkMap[r] = idx
 		}
-
-		count++
-		idxMap[c] = currIdx
-		if count > maxCount {
-			maxCount = count
-		}
+		longestLen = max(longestLen, len(checkMap))
 	}
-	return maxCount
+
+	return longestLen
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func initCheckMap(s string, prevIdx int, idx int) map[rune]int {
+	checkMap := make(map[rune]int)
+	for i := prevIdx + 1; i < idx+1; i++ {
+		checkMap[rune(s[i])] = i
+	}
+	return checkMap
 }
