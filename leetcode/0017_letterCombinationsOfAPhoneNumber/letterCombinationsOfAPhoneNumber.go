@@ -1,4 +1,4 @@
-package lettercombinationsiofaphonenumber
+package lettercombinationsofaphonenumber
 
 var (
 	digitStrMap = make(map[string][]string)
