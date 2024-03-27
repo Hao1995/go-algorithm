@@ -19,7 +19,7 @@ For example:
 // [1, 1, 1]
 // [0, 1, 1]
 
-1. Initial DP's first row and column.
+1. Initial DP first row and column.
 // [0, 1, 1]
 // [1, x, x]
 // [0, x, x]
