@@ -4,7 +4,8 @@
 DFS, but it exceed the time limit.
 
 ## Approach
-Dynamic Programming
+Dynamic Programming.
+Refer from: https://www.youtube.com/watch?v=6aEyTjOwlJU
 Start from idx 0, then keep search to the final one.
 
 Explanation:
