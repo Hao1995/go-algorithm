@@ -29,3 +29,48 @@ func findCheapestPrice(n int, flights [][]int, src int, dst int, k int) int {
 	}
 	return prices[dst]
 }
+
+func hashFindCheapestPrice(n int, flights [][]int, src int, dst int, k int) int {
+	// O(n)
+	const MAX = 1 << 31
+	price := make([]int, n)
+	for i := 0; i < n; i++ {
+		price[i] = MAX
+	}
+	price[src] = 0
+
+	// O(E)
+	// src:destination[s,w]
+	destMap := make(map[int][][]int)
+	for _, flight := range flights {
+		s, d, p := flight[0], flight[1], flight[2]
+		destMap[s] = append(destMap[s], []int{d, p})
+	}
+
+	// O(k+1)
+	var step int
+	for step <= k {
+		tmpPrice := make([]int, len(price))
+		copy(tmpPrice, price)
+
+		// O(n)
+		for s, sp := range price {
+			if sp == MAX {
+				continue
+			}
+
+			for _, dest := range destMap[s] {
+				d, dp := dest[0], dest[1]
+				tmpPrice[d] = min(tmpPrice[d], sp+dp)
+			}
+		}
+
+		step++
+		price = tmpPrice
+	}
+
+	if price[dst] == MAX {
+		return -1
+	}
+	return price[dst]
+}
