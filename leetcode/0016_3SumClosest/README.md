@@ -10,7 +10,7 @@ Sort the nums with ascending order, that in order to find a bigger or smaller su
 
 // nums=[-1,2,1,-4], target=1
 // sort=[-4,-1,0,1,2,5]
-// fix -4, left=-1, right=5, sum=0
+// fix -4, left=1, right=5, sum=0
 //          if 0 == target { return sum }
 
 
