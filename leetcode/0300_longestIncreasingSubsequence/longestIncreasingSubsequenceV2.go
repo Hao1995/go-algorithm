@@ -1,30 +1,29 @@
 package longestincreasingsubsequence
 
 func lengthOfLISV2(nums []int) int {
-	var tmp []int
-	// for loop: O(n)
-	for _, num := range nums {
-		if size := len(tmp); size == 0 {
-			tmp = append(tmp, num)
-		} else {
-			if num > tmp[size-1] {
-				tmp = append(tmp, num)
-			} else {
-				// binary search: O(logn)
-				// find the min `num`` which gte to current `num`
-				var start, end int = 0, size - 1
-				for start < end {
-					var midd int = (start + end) / 2
+	// init
+	tmp := []int{nums[0]}
 
-					if tmp[midd] < num {
-						start = midd + 1
-					} else {
-						end = midd
-					}
-				}
-				tmp[start] = num
+	for _, num := range nums[1:] {
+		// BS, num greater than tmp[j] and less than tmp[j+1]
+		var start, end int = 0, len(tmp)
+		for start < end {
+			var midd int = (start + end) / 2
+			if num > tmp[midd] {
+				start = midd + 1
+			} else {
+				end = midd
 			}
 		}
+
+		if start == len(tmp) {
+			// append
+			tmp = append(tmp, num)
+		} else {
+			// change
+			tmp[start] = num
+		}
 	}
+
 	return len(tmp)
 }

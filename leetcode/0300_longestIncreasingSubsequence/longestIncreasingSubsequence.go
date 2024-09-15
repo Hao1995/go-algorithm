@@ -1,30 +1,48 @@
 package longestincreasingsubsequence
 
 func lengthOfLIS(nums []int) int {
-	n := len(nums)
-	type item struct {
-		len int
-		val int
-	}
-	dp := make([]item, n+1)
-	dp[0] = item{len: 0, val: -1 << 31}
-	for i := 0; i < n; i++ {
-		var localMax int
-		for j := i; j >= 0; j-- {
-			if nums[i] > dp[j].val {
-				localMax = max(localMax, dp[j].len)
-			}
-		}
-		dp[i+1] = item{len: localMax + 1, val: nums[i]}
+	// t:O(n), s:O(n)
+	cache := make([]int, len(nums))
+	for i := 0; i < len(cache); i++ {
+		cache[i] = -1
 	}
 
+	// t:O(n^2)
+	for i := len(nums) - 1; i >= 0; i-- {
+		dp(nums, i, cache)
+	}
+
+	// t:O(n), s:O(1)
 	var ans int
-	for _, item := range dp[1:] {
-		if item.len > ans {
-			ans = item.len
+	for _, tmp := range cache {
+		ans = max(ans, tmp)
+	}
+
+	return ans
+}
+
+func dp(nums []int, idx int, cache []int) int {
+	if idx >= len(nums) {
+		return 0
+	}
+
+	var maxLen int
+	for i := idx + 1; i < len(nums); i++ {
+		// check it's increasingly
+		if nums[i] > nums[idx] {
+			// check if the following sequence has calcualted
+			if cache[i] != -1 {
+				maxLen = max(maxLen, cache[i])
+			} else {
+				maxLen = max(maxLen, dp(nums, i, cache))
+			}
 		}
 	}
-	return ans
+
+	// 1 means the current length
+	cache[idx] = maxLen + 1
+
+	return cache[idx]
 }
 
 func max(a, b int) int {

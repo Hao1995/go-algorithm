@@ -42,22 +42,21 @@ O(n)
 
 ### Method 2: Binary Search (follow up requirement O(nlogn))
 https://leetcode.com/problems/longest-increasing-subsequence/solutions/74824/java-python-binary-search-o-nlogn-time-with-explanation
-https://www.youtube.com/live/Q6KyDl_xiIg?si=dx56uA5ouPNoIozy
+https://www.youtube.com/live/Q6KyDl_xiIg?si=lAd1j5RqYyp9-Fb6&t=467
 
-// [10,9,2,5,3,7,101,18], tmp=[]
-// 10, tmp=[10]
-// 9, tmp=[9], 9<10, change
-// 2, tmp=[2], 2<9, change
-// 5, tmp=[2,5], 5>2, append
-// 3, tmp=[2,3], 3<5, change
-// 7, tmp=[2,3,7], 7>3, append
-// 101, tmp=[2,3,7,101], 101>7, append
-// 18, tmp=[2,3,7,18], 18<101, change
-// return len(tmp)
+Even the real longest subsequence is [1,4,5,9,10,20] not [1,5,6,9,10,20], the answer still is `6`.
+Because ...
+1. The current length of `tmp` represents what has been reached in the past.
+2. Changing the past num in the `tmp` is to keep the flexibility of extension in the future.
+3. Appending means the current num can become the largest number of any combination in the past.
 
-The `tmp` array just like a value which store the "maximum length".
-
-So even we have another number `8` at above example, the final answer would not change: ans = len([]int{2,3,7,8}) = 4
-
-The "length" of `tmp` represents the final data.
-Only when the next numbers completely replaces the excessively large number in `tmp` will it be possible to make the length of `tmp` longer.
+// [1,8,4,6,9,2,5,10,20], tmp=[]
+// 1,                   initial, tmp=[1]
+// 8, 8 > 1,            append, tmp=[1,8]
+// 4, 4 > 1 && 4 < 8,   change 8, tmp=[1,4]
+// 6, 6 > 4,            append, tmp=[1,4,6]
+// 9, 9 > 6,            append, tmp=[1,4,6,9]
+// 2, 2 > 1 && 2 < 4,   change 4, tmp=[1,2,6,9], this combination not really exist, but it means further potential cases.
+// 5, 5 > 2 && 5 < 6,   change 2, tmp=[1,5,6,9], there is impossible to have a combination like [...,2,5,...] because the former combination [1,4,6,9] already longer than it.
+// 10, 10 > 9,          append, tmp=[1,5,6,9,10]
+// 20, 20 > 10,         append, tmp=[1,5,6,9,10,20], size=6
