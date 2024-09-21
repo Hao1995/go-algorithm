@@ -1,13 +1,13 @@
 package coursescheduleii
 
 type WordDictionary struct {
-	Trie   map[byte]WordDictionary
+	Trie   []*WordDictionary
 	IsWord bool
 }
 
 func Constructor() WordDictionary {
 	return WordDictionary{
-		Trie:   make(map[byte]WordDictionary),
+		Trie:   make([]*WordDictionary, 26),
 		IsWord: false,
 	}
 }
@@ -18,22 +18,24 @@ func (this *WordDictionary) AddWord(word string) {
 		return
 	}
 
-	childTrie, ok := this.Trie[word[0]]
-	if !ok {
-		childTrie = Constructor()
+	idx := word[0] - 'a'
+
+	childTrie := this.Trie[idx]
+	if childTrie == nil {
+		trie := Constructor()
+		childTrie = &trie
 	}
 	childTrie.AddWord(word[1:])
-	this.Trie[word[0]] = childTrie
+	this.Trie[idx] = childTrie
 }
 
 func (this *WordDictionary) Search(word string) bool {
-	if len(word) == 0 {
-		return this.IsWord
+	if this == nil {
+		return false
 	}
 
-	childTrie, ok := this.Trie[word[0]]
-	if ok {
-		return childTrie.Search(word[1:])
+	if len(word) == 0 {
+		return this.IsWord
 	}
 
 	if word[0] == '.' {
@@ -42,9 +44,16 @@ func (this *WordDictionary) Search(word string) bool {
 				return true
 			}
 		}
+		return false
 	}
 
-	return false
+	idx := word[0] - 'a'
+	childTrie := this.Trie[idx]
+	if childTrie == nil {
+		return false
+	}
+
+	return childTrie.Search(word[1:])
 }
 
 /**
