@@ -1,25 +1,26 @@
-# Intuition
-Just sort the points by closest distance in place, then return the first k points.
+# 973. K Closest Points to Origin
 
-# Approach
----
+## Intuition
+Sort or Priority Queue
 
-# Complexity
-- Time complexity:
-I am using golang build-in sorting algorithm: O(N*log(N))
+## Approach
+// Approach.1
+// Calculate all Euclidean distance: O(n)
+// Sort the distance array with increading order: O(nlogn)
+// Return the top K closest points: O(k)
+// Overall: O(k+nlogn)
 
-- Space complexity:
-O(1) ?
+// Approach.2
+// Calculate all Euclidean distance and store them into a MaxHeap: O(n*logn)
+// Return the top K closest points: O(k*logn)
+// Overall: O((k+n)logn)
 
-# Code
-```
-func kClosest(points [][]int, k int) [][]int {
-    sort.Slice(points, func(i, j int) bool {
-        distA := points[i][0] * points[i][0] + points[i][1] * points[i][1]
-        distB := points[j][0] * points[j][0] + points[j][1] * points[j][1]
-        return distA < distB
-    })
-    
-    return points[:k]
-}
-```
+// Approach.3 (my V2 solution)
+// Iterate input:
+//      Insert to the MaxHeap: O(nlogn)
+//      Remove the max item from the MaxHeap if length more than k: O((n-k)logn)
+// Overall: O(nlogn)
+
+// Approach. 4 (my V1 solution)
+// Sort the points with build-in distance calculation.
+// Overall: O(nlogn)
