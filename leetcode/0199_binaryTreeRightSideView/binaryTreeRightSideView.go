@@ -15,33 +15,31 @@ type TreeNode struct {
  * }
  */
 func rightSideView(root *TreeNode) []int {
-	var queue []*TreeNode
-	var nextQueue []*TreeNode
-
 	if root == nil {
 		return []int{}
 	}
 
 	var ans []int
-	ans = append(ans, root.Val)
-	queue = append(queue, root)
-
-	for len(queue) > 0 || len(nextQueue) > 0 {
-		if len(queue) == 0 {
-			ans = append(ans, nextQueue[len(nextQueue)-1].Val)
-			queue = nextQueue
-			nextQueue = []*TreeNode{}
+	q, nq := []*TreeNode{root}, []*TreeNode{}
+	for len(q) > 0 || len(nq) > 0 {
+		if len(q) == 0 {
+			q, nq = nq, []*TreeNode{}
+			continue
 		}
 
-		for _, node := range queue {
-			if node.Left != nil {
-				nextQueue = append(nextQueue, node.Left)
-			}
-			if node.Right != nil {
-				nextQueue = append(nextQueue, node.Right)
-			}
+		var node *TreeNode
+		node, q = q[0], q[1:]
+		if len(q) == 0 {
+			ans = append(ans, node.Val)
 		}
-		queue = []*TreeNode{}
+
+		if node.Left != nil {
+			nq = append(nq, node.Left)
+		}
+
+		if node.Right != nil {
+			nq = append(nq, node.Right)
+		}
 	}
 
 	return ans
