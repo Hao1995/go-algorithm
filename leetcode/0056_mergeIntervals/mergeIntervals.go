@@ -3,44 +3,42 @@ package mergeintervals
 import "sort"
 
 func merge(intervals [][]int) [][]int {
-	if len(intervals) <= 1 {
-		return intervals
-	}
-
-	var ans [][]int
-
-	// sorted by start with asc
+	// O(nlogn)
 	sort.Slice(intervals, func(i, j int) bool {
 		return intervals[i][0] < intervals[j][0]
 	})
 
+	ans := make([][]int, 0, len(intervals))
 	ans = append(ans, intervals[0])
-	for i := 1; i < len(intervals); i++ {
-		a := ans[len(ans)-1]
-		b := intervals[i]
-		if isOverlapped(a, b) {
-			tmp := mergeIntervals(a, b)
-			ans[len(ans)-1] = tmp
+
+	// O(n)
+	for _, interval := range intervals[1:] {
+		if isOverlapping(ans[len(ans)-1], interval) {
+			ans[len(ans)-1] = mergeTwoIntervals(ans[len(ans)-1], interval)
 		} else {
-			ans = append(ans, b)
+			ans = append(ans, interval)
 		}
 	}
 
 	return ans
 }
 
-// [1,3],[2,4]
-// [1,5],[2,4]
-// [1,6],[1,3]
-// [1,6],[8,10]
-func isOverlapped(a []int, b []int) bool {
-	if b[0] >= a[0] && b[0] <= a[1] {
-		return true
+func isOverlapping(a []int, b []int) bool {
+	// both start and end less than the other interval
+	// () []
+	if a[0] < b[0] && a[1] < b[0] {
+		return false
 	}
-	return false
+
+	// [] ()
+	if b[0] < a[0] && b[1] < a[0] {
+		return false
+	}
+
+	return true
 }
 
-func mergeIntervals(a []int, b []int) []int {
+func mergeTwoIntervals(a []int, b []int) []int {
 	return []int{min(a[0], b[0]), max(a[1], b[1])}
 }
 
