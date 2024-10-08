@@ -1,4 +1,4 @@
-# 152 Maximum Product Subarray
+# 152. Maximum Product Subarray
 
 ## Intuition
 Must consider positive and negative situations.
@@ -11,3 +11,6 @@ Remember the minimum value and maximum value of each step to calculate the next 
 // -2, minVal=-12, maxVal=-6, ans=6
 // -4, minVal=24, maxVal=48, ans=48
 // maxAns=48
+
+T: O(n)
+S: O(1)
