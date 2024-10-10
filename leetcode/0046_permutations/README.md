@@ -1,54 +1,27 @@
 # 46. Permutations
 
-Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.
-
-Example 1:
-
-Input: nums = [1,2,3]
-Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
-Example 2:
-
-Input: nums = [0,1]
-Output: [[0,1],[1,0]]
-Example 3:
-
-Input: nums = [1]
-Output: [[1]]
- 
-
-Constraints:
-
-1 <= nums.length <= 6
--10 <= nums[i] <= 10
-All the integers of nums are unique.
-
 ## Intuition
-We need an algorithm that can list all possible combinations, e.g., using depth-first search (DFS) or breadth-first search (BFS).
-
-Then, I observed a situation:
-
-Case: [1,2,3,4]
-
-When I start from 1, the next one would be 2, and so on until reaching 4.
-```
-[1,2,3,4]
-```
-
-Then, I will backtrack to change 3 to 4 and continue filling the remaining number,
-```
-[1,2,4,3]
-```
-
-And so on. If there are no remaining numbers, continue backward to change the numbers.
-```
-[1,3,2,4],[1,3,4,2]
-[1,4,2,3],[1,4,3,2]
-[2,1,3,4],[2,1,4,3]
-[2,3,1,4],[2,3,4,1]
-...
-```
+1. Convert to hash map in order to try the remaining nums.
+(If we are using an array, the first permutation must start by [1,2], but when we want to try [1,3], we are hard to know  we still have a [2] not yet be considered.)
+2. Try different num
+3. Recursive backtracking function to try different possibility within the hash map.
+4. Restore the num back to the hash map.
+5. Repeat 2~4.
 
 ## Approach
-1. Use DFS.
-2. Keep track of all existing numbers, and if a number already exists, skip it.
-3. If the length of the list is the same as the length of the input, add it to the answer list.
+// nums=[1,2,3]
+// convert it to a hash map=[1:1, 2:1, 3:1]
+// iterate the hash map
+// 1, permutation=[1], map=[2:1, 3:1]
+//      2, permutation=[1, 2], map=[3:1]
+//          3, permutation=[1, 2, 3], map=[]
+//              append permutation to ans=[[1, 2, 3]]
+//          restore 3, map=[3:1]
+//      restore 2, map=[2:1, 3:1]
+//      3, permutation=[1, 3], map=[2:1]
+//          2, permutation=[1, 3, 2], map=[]
+//              append permutation to ans=[[1, 2, 3], [1, 3, 2]]
+// ...
+
+// T: O(n!)
+// S: O(n)
