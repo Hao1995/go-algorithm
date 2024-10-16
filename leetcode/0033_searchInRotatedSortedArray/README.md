@@ -7,5 +7,5 @@ However, the `nums` array might have been rotated, so it is essential to determi
 
 ## Approach
 1. Check if the `nums` array has been rotated.
-2. If it has, find the final index of the left side of `nums`, then perform Binary Search to find the target.
-3. If it has not been rotated, execute Binary Search directly to find the target.
+2. If it is, find the original start number.
+3. Find the target on different side of the `nums`
