@@ -12,3 +12,7 @@ This problem needs to try the different combinations from the wordDict, so my fi
 But I encountered a time limit problem.
 After searching the solution on the internet, I realized that I need to use `Trie` instead of directly compare whole word.
 Then using local cache to remember if the character has been walked through.
+
+## Approach V2
+Ref: https://youtu.be/Sx9NNgInc3A?si=81efROuRBSmV-PGf
+We don't need to build a trie, we just need to us dynamic programming.
