@@ -7,40 +7,28 @@ type TreeNode struct {
 }
 
 func buildTree(preorder []int, inorder []int) *TreeNode {
-	return recoverTree(0, 0, len(inorder)-1, preorder, inorder)
-}
+	var dfs func(pre []int, in []int) *TreeNode
+	dfs = func(pre []int, in []int) *TreeNode {
+		if len(pre) == 0 || len(in) == 0 {
+			return nil
+		}
 
-func recoverTree(preStart int, inStart, inEnd int, preorder []int, inorder []int) *TreeNode {
-	if preStart >= len(preorder) || inStart > inEnd {
-		return nil
-	}
+		rootNum := pre[0]
 
-	var root *TreeNode = &TreeNode{
-		Val: preorder[preStart],
-	}
-	var inIdx int = 0
-	for i := inStart; i <= inEnd; i++ {
-		if inorder[i] == root.Val {
-			inIdx = i
-			break
+		var rootIdxOfIn int
+		for idx, num := range in {
+			if num == rootNum {
+				rootIdxOfIn = idx
+				break
+			}
+		}
+
+		return &TreeNode{
+			Val:   rootNum,
+			Left:  dfs(pre[1:1+rootIdxOfIn], in[:rootIdxOfIn]),
+			Right: dfs(pre[1+rootIdxOfIn:], in[rootIdxOfIn+1:]),
 		}
 	}
 
-	root.Left = recoverTree(
-		preStart+1,
-		inStart,
-		inIdx-1,
-		preorder,
-		inorder,
-	)
-	root.Right = recoverTree(
-		// `(inIdx - inStart)` means the size of left side from inorder. EX: 1(3) - 0(9) + 1 = 2
-		// `+ 1` means the right side is starting after the left side
-		preStart+(inIdx-inStart)+1,
-		inIdx+1,
-		inEnd,
-		preorder,
-		inorder,
-	)
-	return root
+	return dfs(preorder, inorder)
 }
