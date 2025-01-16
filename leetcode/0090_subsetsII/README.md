@@ -21,3 +21,6 @@ DFS to explore any possibilities.
 //              is empty, ans=[[1,2,2], [1,2], [1], [2,2], [2]]
 //      2, skip all 2, []
 //          is empty, ans=[[1,2,2], [1,2], [1], [2,2], [2], []]
+
+Time complexity: O(n*2^n)
+Space complexity: O(n*2^n) // we need to return all subsets
