@@ -3,21 +3,26 @@ package nonoverlappingintervals
 import "sort"
 
 func eraseOverlapIntervals(intervals [][]int) int {
-	// O(nlogn)
 	sort.Slice(intervals, func(i, j int) bool {
 		return intervals[i][1] < intervals[j][1]
 	})
 
-	// O(n)
-	var end int = intervals[0][1]
-	var ans int
-	for _, intv := range intervals[1:] {
-		if intv[0] >= end && intv[1] >= end {
-			end = intv[1]
-			continue
+	var res, prevEnd int = 0, intervals[0][1]
+	for _, interval := range intervals[1:] {
+		if interval[0] < prevEnd {
+			res++
+			prevEnd = min(prevEnd, interval[1])
+		} else {
+			prevEnd = interval[1]
 		}
-		ans++
 	}
 
-	return ans
+	return res
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
 }
