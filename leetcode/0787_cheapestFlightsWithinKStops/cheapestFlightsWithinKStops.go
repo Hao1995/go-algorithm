@@ -74,3 +74,10 @@ func hashFindCheapestPrice(n int, flights [][]int, src int, dst int, k int) int 
 	}
 	return price[dst]
 }
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
