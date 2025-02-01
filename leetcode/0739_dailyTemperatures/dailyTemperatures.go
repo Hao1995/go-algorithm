@@ -1,27 +1,22 @@
 package dailytemperatures
 
 func dailyTemperatures(temperatures []int) []int {
-	var ans []int = make([]int, len(temperatures))
-	var stack []int = make([]int, 0, len(temperatures))
+	// store the index of temperatures
+	stack := make([]int, 0, len(temperatures))
+	output := make([]int, len(temperatures))
 
-	for i := 0; i < len(temperatures); i++ {
+	for idx, temp := range temperatures {
 		if len(stack) == 0 {
-			stack = append(stack, i)
-		} else if temperatures[i] <= temperatures[stack[len(stack)-1]] {
-			stack = append(stack, i)
-		} else {
-			for len(stack) > 0 {
-				lastIdx := stack[len(stack)-1]
-				if temperatures[i] > temperatures[lastIdx] {
-					ans[lastIdx] = i - lastIdx   // cal the num of days
-					stack = stack[:len(stack)-1] // pop
-				} else {
-					break
-				}
-			}
-			stack = append(stack, i)
+			stack = append(stack, idx)
+			continue
 		}
+
+		for len(stack) > 0 && temp > temperatures[stack[len(stack)-1]] {
+			output[stack[len(stack)-1]] = idx - stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+		}
+		stack = append(stack, idx)
 	}
 
-	return ans
+	return output
 }
