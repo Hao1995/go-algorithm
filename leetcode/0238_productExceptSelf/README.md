@@ -1,10 +1,9 @@
+# 238. Product Except Self
+
 # Intuition
-My first thought is calculate the total product from the all elements, the the second loop will divide by current num, then the result is the answer.
-But the `division` is not allowed in this problem. So I referred to [_V3N0M_](https://leetcode.com/problems/product-of-array-except-self/solutions/1694007/golang-easy-implementation-of-solution/)'s solution.
 
 # Approach
-First for loop, calculate the prefix product then stroe at current index.
-The second loop, calculate the postfix product, then storing to current index.
+Ref: https://youtu.be/bNvIQI2wAjk?si=0xQPRXxTFX0gtXNX
 
 EX:
 // num=[1,2,3,4], ans=[1,1,1,1]
@@ -25,31 +24,7 @@ EX:
 n+n=2n >> O(n)
 
 - Space complexity:
-ans >> n
 prefix >> 1
 postfix >> 1
-n+1+1=O(n)
-
-# Code
-```
-func productExceptSelf(nums []int) []int {
-    var ans []int = make([]int, len(nums))
-    for i := 0; i < len(ans); i++ {
-        ans[i] = 1
-    }
-
-    var prefix int = 1
-    for i := 0; i < len(ans); i++ {
-        ans[i] *= prefix
-        prefix *= nums[i]
-    }
-
-    var postfix int = 1
-    for i := len(ans) - 1; i >= 0; i-- {
-        ans[i] *= postfix
-        postfix *= nums[i]
-    }
-
-    return ans
-}
-```
+ouput >> n
+1+1+n >> O(n)
