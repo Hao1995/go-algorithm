@@ -3,6 +3,7 @@ package groupanagrams
 import "sort"
 
 func groupAnagrams(strs []string) [][]string {
+	// T:O(k) * O(nlogn), S:O(k)
 	sortedMap := make(map[string][]string)
 	for _, s := range strs {
 		v := []byte(s)
@@ -13,6 +14,7 @@ func groupAnagrams(strs []string) [][]string {
 		sortedMap[vStr] = append(sortedMap[vStr], s)
 	}
 
+	// T: O(v)
 	var ans [][]string
 	for _, v := range sortedMap {
 		ans = append(ans, v)
