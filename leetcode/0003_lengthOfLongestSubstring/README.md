@@ -1,7 +1,9 @@
-# Intuition
-Start loop from the beginning and store the char to a map to prevent it is repeated. If it's repeated, start from the next index of previouse location.
+# 3. Longest Substring Without Repeating Characters
 
-# Approach
+## Intuition
+Start loop from the beginning and store the char to a map to prevent it is repeated. If it's repeated, start from the next index of previous location.
+
+## Approach
 `abcadef`, ans=6(dbadef)
 a, longestSubStr=a, count=1, maxCount=1
 b, longestSubStr=ab, count=2, maxCount=2
